@@ -1,15 +1,15 @@
 import base, { filename } from 'paths.macro'
 import { argEvents, dirnameTitle } from '@/.storybook/utils'
-import VButton from '@/components/global/VButton.vue'
+import VButton from '@/components/base/VButton.vue'
 
 export default {
   title: dirnameTitle(base, filename),
   component: VButton,
 }
 
-const Template = ({ 'v-model': model, slot, onlyIcon, ...restProps }, { argTypes }) => ({
+const Template = ({ 'v-model': model, slot, ...restProps }, { argTypes }) => ({
   props: {
-    args: { default: () => ({ model, slot, onlyIcon, restProps }) },
+    args: { default: () => ({ model, slot, restProps }) },
     events: { default: () => argEvents(argTypes) }
   },
   components: { VButton },

@@ -15,6 +15,11 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      {
+        src: 'https://code.iconify.design/1/1.0.7/iconify.min.js', body: true,
+      }
     ]
   },
 
@@ -45,7 +50,7 @@ export default {
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
-    '@/components/global'
+    '@/components/base'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
