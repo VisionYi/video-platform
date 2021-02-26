@@ -4,6 +4,8 @@
       'icon',
       color ? COLOR[color] : '',
       size ? SIZE[size] : '',
+      sizeMd ? SIZE_MD[sizeMd] : '',
+      sizeLg ? SIZE_LG[sizeLg] : '',
     ]"
     @click="$emit('click', $event)"
   >
@@ -18,6 +20,16 @@ export const COLOR = {
 export const SIZE = {
   small: 'is-small',
   medium: 'is-medium',
+}
+export const SIZE_MD = {
+  small: 'is-md-small',
+  default: 'is-md-default',
+  medium: 'is-md-medium',
+}
+export const SIZE_LG = {
+  small: 'is-lg-small',
+  default: 'is-lg-default',
+  medium: 'is-lg-medium',
 }
 
 export default {
@@ -41,11 +53,27 @@ export default {
         return Object.keys(COLOR).includes(value)
       }
     },
+    sizeMd: {
+      type: String,
+      default: undefined,
+      validator (value) {
+        return Object.keys(SIZE_MD).includes(value)
+      }
+    },
+    sizeLg: {
+      type: String,
+      default: undefined,
+      validator (value) {
+        return Object.keys(SIZE_LG).includes(value)
+      }
+    }
   },
   data () {
     return {
       COLOR,
       SIZE,
+      SIZE_MD,
+      SIZE_LG,
     }
   }
 }
@@ -82,6 +110,40 @@ export default {
   &.is-medium {
     width: 32px;
     height: 32px;
+  }
+
+  @include media-area('md') {
+    &.is-md-small {
+      width: 20px;
+      height: 20px;
+    }
+
+    &.is-md-default {
+      width: 24px;
+      height: 24px;
+    }
+
+    &.is-md-medium {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  @include media-area('lg') {
+    &.is-lg-small {
+      width: 20px;
+      height: 20px;
+    }
+
+    &.is-lg-default {
+      width: 24px;
+      height: 24px;
+    }
+
+    &.is-lg-medium {
+      width: 32px;
+      height: 32px;
+    }
   }
 }
 </style>

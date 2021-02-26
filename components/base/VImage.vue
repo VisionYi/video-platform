@@ -5,7 +5,7 @@
       v-lazy:background-image="src"
       class="image__background-image"
     />
-    <img v-lazy="src" :alt="alt">
+    <img v-else v-lazy="src" :alt="alt">
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default {
     height: 100%;
     background-position: center;
     background-size: cover;
-    background-color: $gray-400;
+    background-color: $gray-300;
     background-repeat: no-repeat;
   }
 
@@ -45,6 +45,7 @@ export default {
     width: 100%;
     height: 100%;
     border-radius: inherit;
+    background-color: $gray-300;
   }
 }
 </style>

@@ -1,4 +1,7 @@
+const isDevelopmentMode = process.env.NODE_ENV === 'development'
+
 export default {
+  ssr: false,
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
@@ -14,7 +17,7 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/dist/favicon.ico' }
     ],
     script: [
       {
@@ -26,6 +29,7 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/styles/base.scss',
+    '@/assets/styles/grid.scss',
   ],
   styleResources: {
     scss: [
@@ -37,6 +41,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/vue-lazyload.js',
+    '@/plugins/axios.js',
   ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -59,10 +64,29 @@ export default {
     '@nuxtjs/axios',
   ],
 
+  router: {
+    base: '/dist'
+  },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    // when run production mode, `extractCSS` can make CSS order as the same with development mode
+    // reference: https://nuxtjs.org/api/configuration-build/#extractcss
+    extractCSS: isDevelopmentMode ? false : { ignoreOrder: true },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          styles: {
+            name: 'styles',
+            test: /\.(css|vue)$/,
+            chunks: 'all',
+            enforce: true
+          }
+        }
+      }
+    }
   }
 }

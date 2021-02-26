@@ -5,7 +5,6 @@ $primary-light: #10b981;
 // neutral color
 $gray-100: #f3f4f6;
 $gray-300: #d1d5db;
-$gray-400: #9ca3af;
 $gray-500: #6b7280;
 $gray-700: #374151;
 
@@ -15,7 +14,7 @@ $base-font-size: 16px;
 $base-font-weight: normal;
 $base-line-hight: 1.5;
 $base-letter-spacing: 1px;
-$base-background-color: #fdfdfc;
+$base-background-color: #ffffff;
 
 // breakpoints
 $breakpoint-md: 768px;
@@ -27,7 +26,31 @@ $breakpoint-areas: (
   lg-down: '(max-width: #{$breakpoint-lg - 0.02px})',
   xl-down: '(max-width: #{$breakpoint-xl - 0.02px})',
 
-  md-up: '(min-width: #{$breakpoint-md})',
-  lg-up: '(min-width: #{$breakpoint-lg})',
-  xl-up: '(min-width: #{$breakpoint-xl})',
+  md: '(min-width: #{$breakpoint-md})',
+  lg: '(min-width: #{$breakpoint-lg})',
+  xl: '(min-width: #{$breakpoint-xl})',
 );
+
+$breakpoint-areas-map: (
+  md: '(min-width: #{$breakpoint-md})',
+  lg: '(min-width: #{$breakpoint-lg})',
+  xl: '(min-width: #{$breakpoint-xl})',
+);
+
+$grid-col-width-map: (
+  12: 100%,
+  6: 50%,
+  4: 33.333%,
+  3: 25%,
+);
+
+$grid-gap-map: (
+  2: 8px,
+  3: 12px,
+  4: 16px,
+  5: 20px,
+  6: 24px,
+);
+
+$z-index-header: 110;
+$z-index-navbar: 100;

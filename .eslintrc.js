@@ -20,5 +20,9 @@ module.exports = {
       'error',
       'only-multiline'
     ],
+    curly: [
+      'error',
+      'multi-line'
+    ]
   }
 }
