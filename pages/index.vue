@@ -51,7 +51,7 @@ export default {
   methods: {
     async initialDataBase () {
       // because here are the limit 50 per calling API & maxTotal is 200
-      const api = 'https://youtube.googleapis.com/youtube/v3/videos?key=AIzaSyA06-aXEiH_nzTyugEVL8zERazSwuJRcfc&part=snippet,contentDetails&chart=mostPopular&maxResults=50'
+      const api = `https://youtube.googleapis.com/youtube/v3/videos?key=${process.env.NUXT_ENV_YOUTUBE_KEY}&part=snippet,contentDetails&chart=mostPopular&maxResults=50`
       const res = await fetch(api)
       const { nextPageToken, items } = await res.json()
       const res2 = await fetch(api + `&pageToken=${nextPageToken}`)

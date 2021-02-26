@@ -1,4 +1,7 @@
+import 'dotenv'
+
 const isDevelopmentMode = process.env.NODE_ENV === 'development'
+console.log('process.env.NUXT_ENV_PUBLIC_PATH', process.env.NUXT_ENV_PUBLIC_PATH)
 
 export default {
   ssr: false,
@@ -17,7 +20,7 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/dist/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: process.env.NUXT_ENV_PUBLIC_PATH + 'favicon.ico' }
     ],
     script: [
       {
@@ -51,6 +54,7 @@ export default {
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
     '@nuxtjs/style-resources',
+    '@nuxtjs/dotenv',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -65,7 +69,7 @@ export default {
   ],
 
   router: {
-    base: '/dist'
+    base: process.env.NUXT_ENV_PUBLIC_PATH || '/',
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
