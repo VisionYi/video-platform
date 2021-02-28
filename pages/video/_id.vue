@@ -12,35 +12,50 @@
     <div class="g-row">
       <div class="g-col-flexible">
         <h2 class="title">
-          {{ title }}
+          {{ video.title }}
         </h2>
       </div>
       <div class="g-col">
         <div class="heart">
-          <heart v-model="isFavorite" size="medium" @change="changeHeart()" />
+          <heart v-model="video.isFavorite" size="medium" @change="changeHeart()" />
         </div>
       </div>
     </div>
     <p class="text">
-      {{ description }}
+      {{ video.description }}
     </p>
   </div>
 </template>
 
+<router>
+{
+  name: 'VideoDetail',
+  meta: {
+    keepAlive: false,
+  }
+}
+</router>
+
 <script>
 import Heart from '@/components/Heart.vue'
-import { addFavoriteIds, getFavoriteIds, removeFavoriteIds } from '@/utils/helpers'
+import { addFavoriteVideos, getFavoriteVideos, getFormatData, removeFavoriteVideos } from '@/utils/helpers'
 import 'video.js/dist/video-js.css'
 import 'videojs-contrib-hls'
 import videojs from 'video.js'
 
 export default {
+  name: 'VideoDetail',
   components: { Heart },
   data () {
     return {
-      title: '123',
-      description: '',
-      isFavorite: false,
+      video: {
+        id: '',
+        title: '',
+        content: '',
+        image: '',
+        time: '',
+        isFavorite: false,
+      },
       player: null,
       options: {
         bigPlayButton: false,
@@ -97,16 +112,17 @@ export default {
       const id = this.$route.params.id
       const { items } = await this.$api.videoListById(id)
 
-      this.title = items[0].snippet.title
-      this.description = items[0].snippet.description
-      this.isFavorite = getFavoriteIds().includes(id)
+      this.video = {
+        ...getFormatData(items[0]),
+        isFavorite: getFavoriteVideos().map(i => i.id).includes(id)
+      }
     },
 
     changeHeart () {
       if (this.isFavorite) {
-        addFavoriteIds(this.$route.params.id)
+        addFavoriteVideos(this.video)
       } else {
-        removeFavoriteIds(this.$route.params.id)
+        removeFavoriteVideos(this.video.id)
       }
     }
   }

@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div v-if="searchCount" class="mb-3">
+      Quantity: {{ searchCount }}
+    </div>
     <video-card-list
       ref="list"
       v-scroll="handleScroll"
@@ -10,11 +13,22 @@
   </div>
 </template>
 
+<router>
+{
+  name: 'Index',
+  meta: {
+    keepAlive: true,
+  }
+}
+</router>
+
 <script>
 import VideoCardList from '@/components/VideoCardList.vue'
-import { addFavoriteIds, getFavoriteIds, getFormatData, removeFavoriteIds } from '@/utils/helpers'
+import { addFavoriteVideos, getFavoriteVideos, getFormatData, removeFavoriteVideos } from '@/utils/helpers'
+import { mapGetters } from 'vuex'
 
 export default {
+  name: 'Index',
   components: { VideoCardList },
   directives: {
     scroll: {
@@ -29,68 +43,106 @@ export default {
 
       unbind (el) {
         window.removeEventListener('scroll', el.scrollCallback)
-      }
+      },
     }
   },
   data () {
     return {
-      database: [],
-      cards: [],
+      cards: [
+        {
+          id: '',
+          title: '',
+          content: '',
+          image: '',
+          time: '',
+          isFavorite: false,
+        }
+      ],
       page: 1,
       isEndPage: false,
       isLoadingMore: true,
+      nextPageToken: null, // for youtube API
+      searchCount: 0,
+      routeLeave: false,
     }
   },
-  fetchOnServer: false,
   async fetch () {
-    await this.initialDataBase()
-    await this.fectData()
+    await this.fectData(this.searchText)
   },
+  fetchOnServer: false,
+
   computed: {
+    ...mapGetters('app', [
+      'searchText'
+    ]),
+  },
+  watch: {
+    searchText (value) {
+      this.reFetchData(value)
+    }
+  },
+  created () {
+    this.cards = []
+  },
+  activated () {
+    this.routeLeave = false
+    this.cards = this.cards.map(card => ({ ...card, isFavorite: getFavoriteVideos().map(i => i.id).includes(card.id) }))
+  },
+  deactivated () {
+    this.routeLeave = true
   },
   methods: {
-    async initialDataBase () {
-      // because here are the limit 50 per calling API & maxTotal is 200
-      const api = `https://youtube.googleapis.com/youtube/v3/videos?key=${process.env.NUXT_ENV_YOUTUBE_KEY}&part=snippet,contentDetails&chart=mostPopular&maxResults=50`
-      const res = await fetch(api)
-      const { nextPageToken, items } = await res.json()
-      const res2 = await fetch(api + `&pageToken=${nextPageToken}`)
-      const { items: items2 } = await res2.json()
-      const totalItems = [...items, ...items2]
-
-      // hard code: 100 items
-      this.database = totalItems.map(i => getFormatData(i))
-    },
-
-    databaseByPage ({ page, count = 12 }) {
-      const start = (page * 12) - 1
-      return Promise.resolve(this.database.slice(start, start + count))
-    },
-
-    async fectData (page = 1, isEndPage = false, isWindowOverElementBottom = true) {
-      if (isEndPage || !isWindowOverElementBottom) return
+    async fectData (query = '', page = 1, isWindowOverElementBottom = true) {
+      if (this.isEndPage || !isWindowOverElementBottom) return
 
       this.page = page
       this.isLoadingMore = true
-      const list = await this.databaseByPage({ page: this.page })
+      let videoList = []
 
-      this.cards.push(...list.map(item => ({ ...item, isFavorite: getFavoriteIds().includes(item.id) })))
-      this.isEndPage = list.length === 0
+      if (query) {
+        const searchResult = await this.$api.videoSearch({ query, pageToken: this.nextPageToken })
+        const videoIds = searchResult.items.map(item => item.id?.videoId ?? null)
+        this.nextPageToken = searchResult.nextPageToken
+        this.searchCount = searchResult.pageInfo?.totalResults
+
+        if (videoIds.length !== 0) {
+          const { items } = await this.$api.videoListById(videoIds)
+          videoList = items
+        }
+      } else {
+        const { nextPageToken, items } = await this.$api.videoList({ pageToken: this.nextPageToken })
+        videoList = items
+        this.nextPageToken = nextPageToken
+      }
+
+      const list = videoList.map(item => ({ ...getFormatData(item), isFavorite: getFavoriteVideos().map(i => i.id).includes(item.id) }))
+      this.cards.push(...list)
+      await this.$nextTick()
+
+      this.isEndPage = !this.nextPageToken
       this.isLoadingMore = false
 
-      await this.$nextTick()
       await this.fectData(
+        query,
         this.page + 1,
-        this.isEndPage,
         this.getIsWindowOverElementBottom(this.$refs.list?.$el ?? null)
       )
     },
 
+    reFetchData (query) {
+      this.cards = []
+      this.page = 1
+      this.isEndPage = false
+      this.nextPageToken = null
+      this.searchCount = 0
+      this.fectData(query, this.page)
+    },
+
     updateFavoriteIds (card) {
       if (card.isFavorite) {
-        addFavoriteIds(card.id)
+        addFavoriteVideos(card)
       } else {
-        removeFavoriteIds(card.id)
+        removeFavoriteVideos(card.id)
       }
     },
 
@@ -101,11 +153,15 @@ export default {
     },
 
     handleScroll (element) {
-      if (this.isLoadingMore || this.isEndPage) return
+      if (this.isLoadingMore || this.isEndPage || this.routeLeave) return
 
       const isWindowOverElementBottom = this.getIsWindowOverElementBottom(element)
       if (isWindowOverElementBottom) {
-        this.fectData(this.page + 1, this.isEndPage, isWindowOverElementBottom)
+        this.fectData(
+          this.searchText,
+          this.page + 1,
+          isWindowOverElementBottom,
+        )
       }
     },
   }

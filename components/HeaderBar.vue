@@ -2,19 +2,49 @@
   <div>
     <div class="header__brick" />
     <header class="header">
-      <nuxt-link class="header__container" to="/">
-        <v-icon name="ant-design:home-filled" size-md="medium" class="text-primary" />
-        <h1 class="text-primary text-2xl ml-1">
-          video-platform
-        </h1>
-      </nuxt-link>
+      <div class="header__container" to="/">
+        <nuxt-link class="flex" to="/">
+          <v-icon name="ant-design:home-filled" size-md="medium" class="text-primary" />
+          <h1 class="text-primary text-2xl ml-1 hidden md:block">
+            video-platform
+          </h1>
+        </nuxt-link>
+        <input
+          ref="searchInput"
+          v-model="searchTextInput"
+          type="text"
+          class="search-bar"
+          placeholder="Search"
+          @keypress.enter="search()"
+        >
+        <v-icon class="ml-1" name="ant-design:search-outlined" button @click="search()" />
+      </div>
     </header>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'HeaderBar',
+  data () {
+    return {
+      searchTextInput: ''
+    }
+  },
+  computed: {
+    ...mapGetters('app', [
+      'searchText'
+    ]),
+  },
+  methods: {
+    search () {
+      this.$store.commit('app/setSearchText', this.searchTextInput)
+      if (this.$refs.searchInput) this.$refs.searchInput.blur()
+      if (this.$route.name !== 'Index') this.$router.push({ name: 'Index' })
+    },
+  }
 }
 </script>
 
@@ -60,6 +90,25 @@ export default {
     @include media-area('lg') {
       height: 60px;
     }
+  }
+}
+
+.search-bar {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  background-color: transparent;
+  height: 32px;
+  padding: 2px 4px;
+  border: none;
+  border-bottom: 1px solid $gray-500;
+  outline: none;
+  transition: all .15s;
+  margin-left: 24px;
+  transition: all .15s;
+
+  &:focus {
+    border-bottom: 2px solid $primary;
   }
 }
 </style>

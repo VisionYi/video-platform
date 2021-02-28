@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <div v-if="cards.length !== 0" class="g-row g-gap-3">
+    <transition-group v-if="cards.length !== 0" name="fade" class="g-row g-gap-3">
       <div v-for="card in cards" :key="card.id" class="g-col-12">
         <nuxt-link :to="`/video/${card.id}`">
           <favorite-card
@@ -13,7 +13,7 @@
           />
         </nuxt-link>
       </div>
-    </div>
+    </transition-group>
     <div v-show="cards.length === 0 && !isLoading" class="list__empty">
       No Video
     </div>
@@ -61,5 +61,15 @@ export default {
     color: $gray-500;
     margin: 12px;
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .15s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-to, .fade-leave {
+  opacity: 1;
 }
 </style>

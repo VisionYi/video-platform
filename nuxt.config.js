@@ -1,10 +1,10 @@
 import 'dotenv'
 
 const isDevelopmentMode = process.env.NODE_ENV === 'development'
-console.log('process.env.NUXT_ENV_PUBLIC_PATH', process.env.NUXT_ENV_PUBLIC_PATH)
 
 export default {
   ssr: false,
+
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
@@ -49,12 +49,11 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
-    // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
     '@nuxtjs/style-resources',
     '@nuxtjs/dotenv',
+    '@nuxtjs/router-extras',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -70,6 +69,7 @@ export default {
 
   router: {
     base: process.env.NUXT_ENV_PUBLIC_PATH || '/',
+    middleware: 'router',
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

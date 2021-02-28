@@ -1,7 +1,9 @@
 <template>
-  <i
+  <component
+    :is="button ? 'button' : 'i'"
     :class="[
       'icon',
+      button ? 'icon--button' : '',
       color ? COLOR[color] : '',
       size ? SIZE[size] : '',
       sizeMd ? SIZE_MD[sizeMd] : '',
@@ -10,7 +12,7 @@
     @click="$emit('click', $event)"
   >
     <span class="iconify" :data-icon="name" data-inline="false" />
-  </i>
+  </component>
 </template>
 
 <script>
@@ -66,7 +68,8 @@ export default {
       validator (value) {
         return Object.keys(SIZE_LG).includes(value)
       }
-    }
+    },
+    button: Boolean,
   },
   data () {
     return {
@@ -93,6 +96,12 @@ export default {
     svg {
       width: 100%;
       height: 100%;
+    }
+  }
+
+  &--button {
+    &:hover {
+      opacity: 0.6;
     }
   }
 

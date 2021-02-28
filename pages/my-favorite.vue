@@ -3,10 +3,10 @@
     <div class="flex flex-col lg:flex-row">
       <div class="lg:w-2/6">
         <h2 class="text-3xl">
-          喜歡的影片
+          My Favorite Videos.
         </h2>
         <p class="mt-2 mb-8 text-xl">
-          數量：{{ count }}
+          Quantity: {{ count }}
         </p>
         <hr class="mb-4 lg:hidden">
       </div>
@@ -20,34 +20,56 @@
   </div>
 </template>
 
+<router>
+{
+  name: 'MyFavorite',
+  meta: {
+    keepAlive: false,
+  }
+}
+</router>
+
 <script>
 import FavoriteCardList from '~/components/FavoriteCardList.vue'
-import { getFavoriteIds, getFormatData, removeFavoriteIds } from '~/utils/helpers'
+import { getFavoriteVideos, removeFavoriteVideos } from '~/utils/helpers'
+
 export default {
   name: 'MyFavorite',
   components: { FavoriteCardList },
   data () {
     return {
       count: 0,
-      cards: [],
+      cards: [
+        {
+          id: '',
+          title: '',
+          content: '',
+          image: '',
+          time: '',
+          isFavorite: true,
+        }
+      ],
     }
   },
-  fetchOnServer: false,
   async fetch () {
     await this.fetchData()
-    this.count = getFavoriteIds().length
+    this.count = getFavoriteVideos().length
   },
+  created () {
+    this.cards = []
+  },
+  fetchOnServer: false,
   methods: {
-    async fetchData () {
-      const { items } = await this.$api.videoListById(getFavoriteIds())
-      this.cards = items.map(i => ({ ...getFormatData(i), isFavorite: true }))
+    fetchData () {
+      this.cards = getFavoriteVideos().map(i => ({ ...i, isFavorite: true }))
+      return Promise.resolve()
     },
 
     updateFavoriteIds (card) {
       if (!card.isFavorite) {
         const index = this.cards.findIndex(i => i.id === card.id)
         this.cards.splice(index, 1)
-        removeFavoriteIds(card.id)
+        removeFavoriteVideos(card.id)
         this.count -= 1
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <button class="heart" :class="{ 'is-checked': checkedInner }">
+  <button class="heart" :class="{ 'is-checked': checkedInner }" title="My Favorite">
     <input v-model="checkedInner" type="checkbox">
     <v-icon v-show="checkedInner" :size="size" name="ant-design:heart-filled" class="text-red-500" />
     <v-icon v-show="!checkedInner" :size="size" name="ant-design:heart-outlined" class="text-red-500" />
@@ -37,6 +37,10 @@ export default {
 .heart {
   display: inline-block;
   position: relative;
+
+  &:hover {
+    opacity: 0.6;
+  }
 
   input[type=checkbox] {
     display: block;
