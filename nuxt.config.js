@@ -43,6 +43,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '@/plugins/vue-gtag.js', mode: 'client' },
     '@/plugins/vue-lazyload.js',
     '@/plugins/axios.js',
   ],
@@ -63,8 +64,12 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/sentry',
+    ['@netsells/nuxt-hotjar', {
+      id: process.env.NUXT_ENV_HOTJAR_ID || '',
+      sv: '6',
+    }],
   ],
 
   router: {
@@ -74,6 +79,12 @@ export default {
 
   generate: {
     fallback: true
+  },
+
+  sentry: {
+    dsn: process.env.SENTRY_DSN || '',
+    disabled: process.env.SENTRY_DISABLED === 'true' || false,
+    tracing: true,
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
