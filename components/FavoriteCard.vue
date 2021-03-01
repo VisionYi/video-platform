@@ -7,8 +7,8 @@
           <span class="card__time">{{ time }}</span>
         </figure>
       </div>
-      <div class="g-col-flexible">
-        <div class="g-row items-center px-2 md:px-3">
+      <div class="g-col-flexible px-2 md:px-3">
+        <div class="g-row items-center">
           <div class="g-col-flexible mr-1">
             <h2>{{ title }}</h2>
           </div>

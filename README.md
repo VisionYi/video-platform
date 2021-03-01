@@ -1,6 +1,6 @@
 # Video Platform
 - 模仿 Youtube 網站影音平台的作品，支援 RWD
-- [Dome Page](https://video-platform.netlify.app)
+- [Dome Page](https://video-platform.netlify.app)
 - [Storybook Page](https://video-platform.netlify.app/_storybook)
 - [Design WireFrame](https://whimsical.com/wireframe-M17zBx8n7wSd2vDqi9yCXU)
 
