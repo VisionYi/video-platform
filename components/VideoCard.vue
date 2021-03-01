@@ -4,7 +4,7 @@
       <v-image class="card__image" :src="image" background-image />
       <span class="card__time">{{ time }}</span>
     </figure>
-    <div class="card__content">
+    <div class="py-2 px-1">
       <div class="g-row items-center">
         <div class="g-col-flexible mr-1">
           <h2>{{ title }}</h2>
@@ -102,10 +102,6 @@ export default {
     bottom: 0;
     padding: 0 2px;
     background-color: rgba($color: $gray-100, $alpha: 0.6);
-  }
-
-  &__content {
-    padding: 8px 4px;
   }
 
   h2 {

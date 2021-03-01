@@ -135,7 +135,7 @@ export default {
       // render card UI
       this.isRenderingList = true
       await this.$nextTick()
-      await new Promise(resolve => setTimeout(() => resolve(), 0)) // for finishing special UI render, like `CSS float` element
+      await new Promise(resolve => setTimeout(resolve, 0)) // for finishing special UI render, like `CSS float` element
       this.isRenderingList = false
 
       await this.fectData(

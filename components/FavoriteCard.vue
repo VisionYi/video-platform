@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="g-row">
+    <div class="g-row items-center">
       <div class="g-col">
         <figure class="card__figure">
           <v-image class="card__image" :src="image" background-image />
@@ -8,19 +8,17 @@
         </figure>
       </div>
       <div class="g-col-flexible">
-        <div class="card__content">
-          <div class="g-row items-center">
-            <div class="g-col-flexible mr-1">
-              <h2>{{ title }}</h2>
-            </div>
-            <div class="g-col">
-              <heart v-model="isFavoriteInner" @click.native.stop />
-            </div>
+        <div class="g-row items-center px-2 md:px-3">
+          <div class="g-col-flexible mr-1">
+            <h2>{{ title }}</h2>
           </div>
-          <p>
-            {{ content }}
-          </p>
+          <div class="g-col">
+            <heart v-model="isFavoriteInner" @click.native.stop />
+          </div>
         </div>
+        <p>
+          {{ content }}
+        </p>
       </div>
     </div>
   </div>
@@ -120,14 +118,6 @@ export default {
 
     @include media-area('md') {
       font-size: 16px;
-    }
-  }
-
-  &__content {
-    padding: 0 8px;
-
-    @include media-area('md') {
-      padding: 0 12px;
     }
   }
 
