@@ -105,11 +105,11 @@ export default {
   }
 
   &__content {
-    padding: 8px;
+    padding: 8px 4px;
   }
 
   h2 {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: bold;
     overflow:hidden;
     white-space: nowrap;
@@ -117,6 +117,7 @@ export default {
   }
 
   p {
+    font-size: 14px;
     margin-top: 4px;
     overflow: hidden;
     text-overflow: ellipsis;

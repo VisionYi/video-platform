@@ -1,5 +1,5 @@
 export default $axios => ({
-  videoList: ({ maxResults = 12, pageToken = null }) => {
+  videoList: ({ maxResults = 16, pageToken = null }) => {
     return $axios.get('https://youtube.googleapis.com/youtube/v3/videos', {
       params: {
         key: process.env.NUXT_ENV_YOUTUBE_KEY,
@@ -20,7 +20,7 @@ export default $axios => ({
       }
     })
   },
-  videoSearch: ({ query, maxResults = 12, pageToken = null }) => {
+  videoSearch: ({ query, maxResults = 16, pageToken = null }) => {
     return $axios.get('https://www.googleapis.com/youtube/v3/search', {
       params: {
         key: process.env.NUXT_ENV_YOUTUBE_KEY,

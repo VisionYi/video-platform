@@ -10,6 +10,14 @@
       :is-loading="isLoadingMore"
       @change-card-favorite="updateFavoriteIds($event)"
     />
+    <div v-if="!isLoadingMore && !isInfiniteScroll" class="flex justify-center py-5">
+      <v-button @click="showMore()">
+        Show More
+      </v-button>
+      <v-button class="ml-5" @click="startInfiniteScroll()">
+        Infinite Scroll
+      </v-button>
+    </div>
   </div>
 </template>
 
@@ -61,6 +69,8 @@ export default {
       page: 1,
       isEndPage: false,
       isLoadingMore: true,
+      isRenderingList: true,
+      isInfiniteScroll: false,
       nextPageToken: null, // for youtube API
       searchCount: 0,
       routeLeave: false,
@@ -97,8 +107,9 @@ export default {
 
       this.page = page
       this.isLoadingMore = true
-      let videoList = []
 
+      // fetch data
+      let videoList = []
       if (query) {
         const searchResult = await this.$api.videoSearch({ query, pageToken: this.nextPageToken })
         const videoIds = searchResult.items.map(item => item.id?.videoId ?? null)
@@ -115,12 +126,17 @@ export default {
         this.nextPageToken = nextPageToken
       }
 
+      // set card data
       const list = videoList.map(item => ({ ...getFormatData(item), isFavorite: getFavoriteVideos().map(i => i.id).includes(item.id) }))
       this.cards.push(...list)
-      await this.$nextTick()
-
       this.isEndPage = !this.nextPageToken
       this.isLoadingMore = false
+
+      // render card UI
+      this.isRenderingList = true
+      await this.$nextTick()
+      await new Promise(resolve => setTimeout(() => resolve(), 0)) // for finishing special UI render, like `CSS float` element
+      this.isRenderingList = false
 
       await this.fectData(
         query,
@@ -153,7 +169,8 @@ export default {
     },
 
     handleScroll (element) {
-      if (this.isLoadingMore || this.isEndPage || this.routeLeave) return
+      if (!this.isInfiniteScroll) return
+      if (this.isLoadingMore || this.isRenderingList || this.isEndPage || this.routeLeave) return
 
       const isWindowOverElementBottom = this.getIsWindowOverElementBottom(element)
       if (isWindowOverElementBottom) {
@@ -164,6 +181,15 @@ export default {
         )
       }
     },
+
+    showMore () {
+      this.fectData(this.searchText, this.page + 1)
+    },
+
+    startInfiniteScroll () {
+      this.isInfiniteScroll = true
+      this.showMore()
+    }
   }
 }
 </script>

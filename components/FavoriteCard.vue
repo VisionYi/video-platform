@@ -139,14 +139,12 @@ export default {
     text-overflow: ellipsis;
 
     @include media-area('md') {
-      font-size: 20px;
-    }
-    @include media-area('lg') {
-      font-size: 24px;
+      font-size: 18px;
     }
   }
 
   p {
+    font-size: 14px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -156,12 +154,11 @@ export default {
 
     @include media-area('md') {
       margin-top: 4px;
-      font-size: 16px;
+      -webkit-line-clamp: 3;
     }
 
     @include media-area('lg') {
-      margin-top: 8px;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 4;
     }
   }
 }
