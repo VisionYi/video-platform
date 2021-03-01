@@ -2,7 +2,7 @@
   <div>
     <div class="header__brick" />
     <header class="header">
-      <div class="header__container" to="/">
+      <div class="header__container">
         <nuxt-link class="flex" to="/">
           <v-icon name="ant-design:home-filled" size-md="medium" class="text-primary" />
           <h1 class="text-primary text-2xl ml-1 hidden md:block">

@@ -2,7 +2,7 @@
   <div class="list">
     <div v-if="cards.length !== 0" class="g-row g-gap-5">
       <div v-for="card in cards" :key="card.id" class="g-col-12 g-col-md-6 g-col-lg-3">
-        <nuxt-link :to="`/video/${card.id}`">
+        <nuxt-link :to="`/video/detail?id=${card.id}`">
           <video-card
             :title="card.title"
             :content="card.content"

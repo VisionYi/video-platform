@@ -22,7 +22,7 @@
       </div>
     </div>
     <p class="text">
-      {{ video.description }}
+      {{ video.content }}
     </p>
   </div>
 </template>
@@ -70,7 +70,12 @@ export default {
   fetchOnServer: false,
 
   async fetch () {
-    await this.fetchData()
+    const videoId = this.$route.query?.id
+    if (!videoId) {
+      this.routeErrorAction()
+      return
+    }
+    await this.fetchData(videoId)
   },
 
   mounted () {
@@ -108,9 +113,12 @@ export default {
   },
 
   methods: {
-    async fetchData () {
-      const id = this.$route.params.id
+    async fetchData (id) {
       const { items } = await this.$api.videoListById(id)
+      if (!items[0]) {
+        this.routeErrorAction()
+        return
+      }
 
       this.video = {
         ...getFormatData(items[0]),
@@ -124,7 +132,11 @@ export default {
       } else {
         removeFavoriteVideos(this.video.id)
       }
-    }
+    },
+
+    routeErrorAction () {
+      this.$router.replace({ name: 'Index' })
+    },
   }
 }
 </script>

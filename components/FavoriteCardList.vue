@@ -2,7 +2,7 @@
   <div class="list">
     <transition-group v-if="cards.length !== 0" name="fade" class="g-row g-gap-3">
       <div v-for="card in cards" :key="card.id" class="g-col-12">
-        <nuxt-link :to="`/video/${card.id}`">
+        <nuxt-link :to="`/video/detail?id=${card.id}`">
           <favorite-card
             :title="card.title"
             :content="card.content"
