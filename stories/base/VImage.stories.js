@@ -14,7 +14,7 @@ const Template = ({ 'v-model': model, slot, ...restProps }, { argTypes }) => ({
   },
   components: { VImage },
   template: `
-    <v-image class="w-1/2" v-model="args.model" v-bind="args.restProps" v-on="events"></v-image>
+    <v-image style="width: 50%" v-model="args.model" v-bind="args.restProps" v-on="events"></v-image>
   `
 })
 
