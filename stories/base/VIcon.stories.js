@@ -11,24 +11,33 @@ export default {
   }
 }
 
-const Template = ({ 'v-model': model, slot, ...restProps }, { argTypes }) => ({
+const Template = ({ ...restProps }, { argTypes }) => ({
   props: {
-    args: { default: () => ({ model, slot, restProps }) },
+    args: { default: () => ({ restProps }) },
     events: { default: () => argEvents(argTypes) }
   },
   components: { VIcon },
   template: `
-    <v-icon v-model="args.model" v-bind="args.restProps" v-on="events"></v-icon>
+    <v-icon v-bind="args.restProps" v-on="events"></v-icon>
   `
 })
 
 export const Default = Template.bind({})
 Default.args = {
   name: 'ant-design:home-filled',
-  color: 'primary',
 }
 
-export const DifferentSize = () => ({
+export const IconWithColor = () => ({
+  data: () => ({ colors: Object.keys(COLOR) }),
+  template: `
+    <div>
+      <v-icon name="ant-design:home-filled"></v-icon>
+      <v-icon v-for="color in colors" :key="color" name="ant-design:home-filled" :color="color"></v-icon>
+    </div>
+  `
+})
+
+export const IconWithDifferentSize = () => ({
   data: () => ({ sizes: Object.keys(SIZE) }),
   template: `
     <div>
@@ -37,3 +46,12 @@ export const DifferentSize = () => ({
     </div>
   `
 })
+
+// setTimeout(() => {
+//   const el = document.querySelector('[title="Hide props items"] button')
+//   const el2 = document.querySelector('[title="Hide events items"] button')
+//   const el3 = document.querySelector('[title="Hide slots items"] button')
+//   if (el) el.click()
+//   if (el2) el2.click()
+//   if (el3) el3.click()
+// })
