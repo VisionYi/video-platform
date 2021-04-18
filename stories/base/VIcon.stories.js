@@ -46,12 +46,3 @@ export const IconWithDifferentSize = () => ({
     </div>
   `
 })
-
-// setTimeout(() => {
-//   const el = document.querySelector('[title="Hide props items"] button')
-//   const el2 = document.querySelector('[title="Hide events items"] button')
-//   const el3 = document.querySelector('[title="Hide slots items"] button')
-//   if (el) el.click()
-//   if (el2) el2.click()
-//   if (el3) el3.click()
-// })
