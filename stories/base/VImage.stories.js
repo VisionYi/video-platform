@@ -7,14 +7,14 @@ export default {
   component: VImage,
 }
 
-const Template = ({ 'v-model': model, slot, ...restProps }, { argTypes }) => ({
+const Template = ({ ...restProps }, { argTypes }) => ({
   props: {
-    args: { default: () => ({ model, slot, restProps }) },
+    args: { default: () => ({ restProps }) },
     events: { default: () => argEvents(argTypes) }
   },
   components: { VImage },
   template: `
-    <v-image class="w-1/2" v-model="args.model" v-bind="args.restProps" v-on="events"></v-image>
+    <v-image style="width: 50%" v-bind="args.restProps" v-on="events"></v-image>
   `
 })
 

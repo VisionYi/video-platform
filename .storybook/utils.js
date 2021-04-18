@@ -1,5 +1,14 @@
 import { actions } from '@storybook/addon-actions'
 
+const collapseArgTable = () => {
+  const propsEl = document.querySelector('[title="Hide props items"] button')
+  const eventsEl = document.querySelector('[title="Hide events items"] button')
+  const slotsEl = document.querySelector('[title="Hide slots items"] button')
+  if (propsEl) propsEl.click()
+  if (eventsEl) eventsEl.click()
+  if (slotsEl) slotsEl.click()
+}
+
 /**
  * 從 argTypes 中提出 event 元素為 addon-actions 添加觸發事件功能
  * @param {argTypes} argTypes
@@ -10,6 +19,7 @@ export const argEvents = (argTypes) => {
     return result
   }, {})
 
+  collapseArgTable()
   return actions(events)
 }
 
@@ -40,6 +50,11 @@ export const controlOptions = (options = [], type = 'select') => {
   }
 
   return {
+    table: {
+      type: {
+        summary: options.map(i => `'${i}'`).join('|'),
+      },
+    },
     control: {
       type,
       options: ['select', 'radio', 'inline-radio'].includes(type) ? optionsObj : options

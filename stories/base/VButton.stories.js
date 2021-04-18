@@ -7,14 +7,14 @@ export default {
   component: VButton,
 }
 
-const Template = ({ 'v-model': model, slot, ...restProps }, { argTypes }) => ({
+const Template = ({ slot, ...restProps }, { argTypes }) => ({
   props: {
-    args: { default: () => ({ model, slot, restProps }) },
+    args: { default: () => ({ slot, restProps }) },
     events: { default: () => argEvents(argTypes) }
   },
   components: { VButton },
   template: `
-    <v-button v-model="args.model" v-bind="args.restProps" v-on="events">{{args.slot}}</v-button>
+    <v-button v-bind="args.restProps" v-on="events">{{args.slot}}</v-button>
   `
 })
 
