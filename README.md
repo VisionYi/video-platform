@@ -11,6 +11,7 @@
 - Youtube Data API ([Document](https://developers.google.com/youtube/v3/docs))
 - Analysis Tool - GA tag, Hotjar, Sentry
 - Deploy on Netlify
+- Chromatic visual testing, [Chromatic Storybook](https://607bfa0204b0b10021ff3727-wbimivyzow.chromatic.com/)
 
 ## Start Development
 create a '.env' files for environment variable, default content:
