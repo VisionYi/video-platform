@@ -27,3 +27,13 @@ Default.args = {
   name: 'ant-design:home-filled',
   color: 'primary',
 }
+
+export const DifferentSize = () => ({
+  data: () => ({ sizes: Object.keys(SIZE) }),
+  template: `
+    <div>
+      <v-icon name="ant-design:home-filled"></v-icon>
+      <v-icon v-for="size in sizes" :key="size" name="ant-design:home-filled" :size="size"></v-icon>
+    </div>
+  `
+})
